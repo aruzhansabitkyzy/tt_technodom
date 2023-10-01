@@ -3,11 +3,12 @@ import Tick from "../Tick/Tick";
 import React from "react";
 import { validName, validPassword, validEmail } from "../../utils/validFields";
 interface RegisterProps {
-  buttonBlocked: boolean;
-  setButtonBlocked: (buttonBlocked: boolean) => void;
+  buttonBlocked: boolean,
+  setButtonBlocked: (buttonBlocked: boolean) => void,
+  setErrors: (error: []) => void
 }
 const Register = (props: RegisterProps) => {
-  const { buttonBlocked, setButtonBlocked } = props;
+  const { buttonBlocked, setButtonBlocked, setErrors} = props;
   const [fields, setFields] = React.useState({
     name: "",
     email: "",
@@ -24,9 +25,10 @@ const Register = (props: RegisterProps) => {
       case "name":
         {
           setFields((prev) => ({ ...prev, name: e }));
-          // let isNameValid = validName(e);
-          if (validName(e).length > 0) {
+          let isNameValid = validName(e);
+          if (isNameValid.length > 0) {
             setIsFieldValid((prev) => ({ ...prev, name: false }));
+
           } else {
             setIsFieldValid((prev) => ({ ...prev, name: true }));
           }
@@ -35,9 +37,9 @@ const Register = (props: RegisterProps) => {
       case "email":
         {
           setFields((prev) => ({ ...prev, email: e }));
-          // let isEmailValid = validEmail(e);
+          let isEmailValid = validEmail(e);
           // console.log(isEmailValid)
-          if (validEmail(e).length > 0) {
+          if (isEmailValid.length > 0) {
             setIsFieldValid((prev) => ({ ...prev, email: false }));
           } else {
             setIsFieldValid((prev) => ({ ...prev, email: true }));
@@ -47,8 +49,8 @@ const Register = (props: RegisterProps) => {
       case "password":
         {
           setFields((prev) => ({ ...prev, password: e }));
-          // let isPasswordValid = validPassword(e);
-          if (validPassword(e).length > 0) {
+          let isPasswordValid = validPassword(e);
+          if (isPasswordValid.length > 0) {
             setIsFieldValid((prev) => ({ ...prev, password: false }));
           } else {
             setIsFieldValid((prev) => ({ ...prev, password: true }));
@@ -58,7 +60,9 @@ const Register = (props: RegisterProps) => {
     }
   }
   React.useEffect(() => {
-    console.log(isFieldValid.name + " " +  isFieldValid.email + " " + isFieldValid.password)
+    console.log(
+      isFieldValid.name + " " + isFieldValid.email + " " + isFieldValid.password
+    );
     if (isFieldValid.name && isFieldValid.email && isFieldValid.password) {
       setButtonBlocked(false);
     } else {
@@ -83,7 +87,6 @@ const Register = (props: RegisterProps) => {
         ></input>
         <Tick isValid={isFieldValid.name} />
       </div>
-      <div className='error'>{validName(fields.name)}</div>
       <div className="form_field">
         <label id="title" htmlFor="email">
           *Email
@@ -98,9 +101,7 @@ const Register = (props: RegisterProps) => {
           }}
         ></input>
         <Tick isValid={isFieldValid.email} />
-        
       </div>
-      <div className='error'>{validName(fields.email)}</div>
       <div className="form_field">
         <label id="title" htmlFor="password">
           *Password
@@ -116,7 +117,6 @@ const Register = (props: RegisterProps) => {
         ></input>
         <Tick isValid={isFieldValid.password} />
       </div>
-      <div className='error'>{validName(fields.password)}</div>
       <div className="form_field">
         <input type="checkbox" name="policy" id="policy"></input>
         <label htmlFor="policy">

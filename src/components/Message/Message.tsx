@@ -1,13 +1,25 @@
-const MESSAGES = [
-    "You're logged in!",
-    "Your account have been created!",
-    "Your password have been reset!"
-]
+import './message.css'
+enum Messages {
+    Login = "You're logged in!",
+    Register = "Your account has been created!",
+    Reset = "Your password have been reset!"
+}
+interface MessageProps{
+    submitted:string
+}
 
-const Message = () => {
+const Message = (props:MessageProps) => {
     return (
-        <div>
-           
+        <div className={`message ${props.submitted.length > 0 ? 'show': ''}`}>
+           {props.submitted=='Register' && (
+            <p>{Messages.Register}</p>
+           )}
+            {props.submitted=='Login' && (
+            <p>{Messages.Login}</p>
+           )}
+            {props.submitted=='Reset' && (
+            <p>{Messages.Reset}</p>
+           )}
         </div>
     )
 }

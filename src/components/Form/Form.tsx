@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React from "react";
 import Button from "../Button/Button";
 import Register from "./Register";
 import PhoneNumber from "./PhoneNumber";
@@ -7,61 +7,119 @@ import { addPerson } from "../../store/features/accountSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import "./form.css";
 
-const Form = () => {
-  let phoneRef = useRef<string>("");
-  const [buttonText, setButtonText] = useState("Login");
-  const [buttonBlocked, setButtonBlocked] = useState(true);
-  const [isPhoneValid, setIsPhoneValid] = useState(false);
+interface FormProps {
+  submitted: string;
+  setSubmitted: (submitted: string) => void;
+}
+
+const Form = (props: FormProps) => {
+  let phoneRef = React.useRef<string>("");
+  const [loginPassword, setLoginPassword] = React.useState("");
+  const [errors, setErrors] = React.useState([])
+  const [buttonText, setButtonText] = React.useState("Login");
+  const [buttonBlocked, setButtonBlocked] = React.useState(true);
+  const [isPhoneValid, setIsPhoneValid] = React.useState(false);
   const dispatch = useAppDispatch();
   const persons = useAppSelector((state) => state.account.persons);
 
-  useEffect(() => {
-    if (isPhoneValid) {
-      console.log(buttonBlocked)
-      let el =
-        phoneRef.current?.["value" as keyof typeof phoneRef.current].toString();
-      for (let obj of persons) {
-        if (obj.phoneNumber == el) {
-          setButtonText("Login");
-        } else {
-          setButtonText("Register");
-        }
-      }
-    }
+  React.useEffect(() => {
+    handlePhoneValidation();
   }, [isPhoneValid]);
 
   function onSubmit(e: any) {
     e.preventDefault();
-    const object = {
-      phoneNumber: e.target[0].value,
-      name: e.target[1].value,
-      email: e.target[2].value,
-      password: e.target[3].value,
-    };
+    handleFormSubmission(e);
+  }
 
-    if (buttonText == "Register") {
-      dispatch(addPerson(object));
+  function handlePhoneValidation() {
+    if (isPhoneValid) {
+      console.log(buttonBlocked);
+      let el =
+        phoneRef.current?.["value" as keyof typeof phoneRef.current].toString();
+      let found = persons.some((person) => person.phoneNumber === el);
+      if (found) {
+        setButtonText("Login");
+        setButtonBlocked(false);
+      } else if (found && buttonText == "Reset") {
+        setButtonBlocked(false);
+      } else if(!found){
+        setButtonText("Register");
+        setButtonBlocked(true);
+      }
     }
-    console.log(persons);
+  }
+  function handleFormSubmission(e:any) {
+    switch (buttonText) {
+      case "Register":
+        {
+          const object = {
+            phoneNumber: e.currentTarget[0].value,
+            name: e.target[1].value,
+            email: e.target[2].value,
+            password: e.target[3].value,
+          };
+          dispatch(addPerson(object));
+          props.setSubmitted("Register");
+        }
+        break;
+      case "Login":
+        {
+          let el =
+            phoneRef.current?.[
+              "value" as keyof typeof phoneRef.current
+            ].toString();
+          let logged = persons.some(
+            (person) =>
+              person.phoneNumber === el && person.password == loginPassword
+          );
+          if (logged) {
+            props.setSubmitted("Login");
+          }
+        }
+        break;
+      case "Reset":
+        props.setSubmitted("Reset");
+        setButtonText("Login")
+        break;
+    }
   }
   return (
-    <form className="form" onSubmit={onSubmit}>
-      <PhoneNumber
-        phoneRef={phoneRef}
-        isPhoneValid={isPhoneValid}
-        setIsPhoneValid={setIsPhoneValid}
-      />
-      {buttonText == "Login" && <Login />}
-      {buttonText == "Register" && <Register buttonBlocked={buttonBlocked} setButtonBlocked={setButtonBlocked}/>}
-
-      <div className="field_error"></div>
-      <Button
-        buttonBlocked={buttonBlocked}
-        text={buttonText}
-        active
-        onClick={() => {}}
-      />
-    </form>
+    <div className="container">
+      <div className="formBlock">
+        <form className="form" onSubmit={onSubmit}>
+          <PhoneNumber
+            phoneRef={phoneRef}
+            isPhoneValid={isPhoneValid}
+            setIsPhoneValid={setIsPhoneValid}
+          />
+          {buttonText == "Login" && (
+            <Login
+              setButtonText={setButtonText}
+              loginPassword={loginPassword}
+              setLoginPassword={setLoginPassword}
+            />
+          )}
+          {buttonText == "Register" && (
+            <Register
+              buttonBlocked={buttonBlocked}
+              setButtonBlocked={setButtonBlocked}
+              setErrors={setErrors}
+            />
+          )}
+          <div className="field_error">
+            {errors.map((error) => (
+              <p>{error}</p>
+            ))}
+          </div>
+          <Button
+            buttonBlocked={buttonBlocked}
+            text={buttonText}
+            active
+            onClick={() => {}}
+          />
+        </form>
+      </div>
+    </div>
   );
 };
 export default Form;

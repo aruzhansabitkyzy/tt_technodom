@@ -1,5 +1,12 @@
-import Tick from "../Tick/Tick";
-const Login = () => {
+interface LoginProps {
+  loginPassword: string,
+  setLoginPassword: (loginPassword:string) => void,
+  setButtonText: (buttonText:string) => void,
+}
+const Login = (props:LoginProps) => {
+
+  const {loginPassword, setLoginPassword, setButtonText} = props;
+
     return (
       <div className="login">
         <div className="form_field">
@@ -10,12 +17,13 @@ const Login = () => {
             className="field"
             id="password"
             type="password"
+            value={loginPassword}
+            onChange={(e) =>setLoginPassword(e.target.value)}
             placeholder="Enter your password"
           ></input>
-          <Tick isValid={true}/>
         </div>
         <div className="form_field">
-          <p className="reset">Reset a password</p>
+          <p className="reset" onClick={()=>setButtonText("Reset")}>Reset a password</p>
         </div>
       </div>
     );
