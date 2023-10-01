@@ -2,7 +2,7 @@ import './message.css'
 enum Messages {
     Login = "You're logged in!",
     Register = "Your account has been created!",
-    Reset = "Your password have been reset!"
+    Reset = "Your password has been reset!"
 }
 interface MessageProps{
     submitted:string

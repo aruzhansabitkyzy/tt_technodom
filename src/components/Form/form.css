@@ -1,5 +1,5 @@
 .container {
-  height: 100vh;
+  height: 120vh;
 }
 .formBlock {
   display: block;
@@ -8,6 +8,9 @@
   margin: 0 auto;
   border-radius: 20px;
   padding: 10px;
+}
+.title {
+  text-align: center;
 }
 .form {
   margin: 30px;

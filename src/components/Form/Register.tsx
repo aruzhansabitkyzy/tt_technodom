@@ -2,13 +2,14 @@ import "./form.css";
 import Tick from "../Tick/Tick";
 import React from "react";
 import { validName, validPassword, validEmail } from "../../utils/validFields";
+import Errors from "../Errors/Errors";
 interface RegisterProps {
-  buttonBlocked: boolean,
-  setButtonBlocked: (buttonBlocked: boolean) => void,
-  setErrors: (error: []) => void
+  buttonBlocked: boolean;
+  setButtonBlocked: (buttonBlocked: boolean) => void;
+  // setErrors: (error: []) => void
 }
 const Register = (props: RegisterProps) => {
-  const { buttonBlocked, setButtonBlocked, setErrors} = props;
+  const { buttonBlocked, setButtonBlocked } = props;
   const [fields, setFields] = React.useState({
     name: "",
     email: "",
@@ -28,7 +29,6 @@ const Register = (props: RegisterProps) => {
           let isNameValid = validName(e);
           if (isNameValid.length > 0) {
             setIsFieldValid((prev) => ({ ...prev, name: false }));
-
           } else {
             setIsFieldValid((prev) => ({ ...prev, name: true }));
           }
@@ -87,6 +87,9 @@ const Register = (props: RegisterProps) => {
         ></input>
         <Tick isValid={isFieldValid.name} />
       </div>
+      {!isFieldValid.name && (
+        <Errors error={["Name must contain at least 5 symbols"]} />
+      )}
       <div className="form_field">
         <label id="title" htmlFor="email">
           *Email
@@ -102,6 +105,14 @@ const Register = (props: RegisterProps) => {
         ></input>
         <Tick isValid={isFieldValid.email} />
       </div>
+      {!isFieldValid.email && (
+        <Errors
+          error={[
+            "Email must have minimum of 5 length",
+            "Email must contain @",
+          ]}
+        />
+      )}
       <div className="form_field">
         <label id="title" htmlFor="password">
           *Password
@@ -117,8 +128,17 @@ const Register = (props: RegisterProps) => {
         ></input>
         <Tick isValid={isFieldValid.password} />
       </div>
+      {!isFieldValid.password && (
+        <Errors
+          error={[
+            "Password must be 8 symbols long",
+            "Password must have an uppercase letter",
+            "Password must have at least one digit",
+          ]}
+        />
+      )}
       <div className="form_field">
-        <input type="checkbox" name="policy" id="policy"></input>
+        <input type="checkbox" name="policy" id="policy" required></input>
         <label htmlFor="policy">
           I have read and accept Terms of Service & Privacy Policy
         </label>

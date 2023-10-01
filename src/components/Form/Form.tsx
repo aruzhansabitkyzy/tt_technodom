@@ -15,7 +15,7 @@ interface FormProps {
 const Form = (props: FormProps) => {
   let phoneRef = React.useRef<string>("");
   const [loginPassword, setLoginPassword] = React.useState("");
-  const [errors, setErrors] = React.useState([])
+  const [errors, setErrors] = React.useState(null)
   const [buttonText, setButtonText] = React.useState("Login");
   const [buttonBlocked, setButtonBlocked] = React.useState(true);
   const [isPhoneValid, setIsPhoneValid] = React.useState(false);
@@ -60,6 +60,7 @@ const Form = (props: FormProps) => {
           };
           dispatch(addPerson(object));
           props.setSubmitted("Register");
+          setButtonText("Login")
         }
         break;
       case "Login":
@@ -87,6 +88,7 @@ const Form = (props: FormProps) => {
     <div className="container">
       <div className="formBlock">
         <form className="form" onSubmit={onSubmit}>
+          <h3 className='title'>{buttonText}</h3>
           <PhoneNumber
             phoneRef={phoneRef}
             isPhoneValid={isPhoneValid}
@@ -103,14 +105,15 @@ const Form = (props: FormProps) => {
             <Register
               buttonBlocked={buttonBlocked}
               setButtonBlocked={setButtonBlocked}
-              setErrors={setErrors}
+              // errors={errors}
+              // setErrors={setErrors}
             />
           )}
-          <div className="field_error">
+          {/* <div className="field_error">
             {errors.map((error) => (
               <p>{error}</p>
             ))}
-          </div>
+          </div> */}
           <Button
             buttonBlocked={buttonBlocked}
             text={buttonText}

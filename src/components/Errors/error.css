@@ -1,0 +1,10 @@
+.errors {
+    color: red;
+    font-size: 13px;
+    font-weight: 600;
+    padding-left: 15px;
+    margin: 0;
+}
+.errors p{
+    margin: 0 !important;
+}
