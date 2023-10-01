@@ -1,0 +1,16 @@
+.correct_field {
+  display: none;
+  height: 30px;
+  width: 30px;
+  position: relative;
+}
+.correct_field img {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  top: 30%;
+  left: 10%;
+}
+.display {
+  display: inline-block;
+}

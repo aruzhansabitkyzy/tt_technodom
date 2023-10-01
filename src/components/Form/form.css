@@ -1,0 +1,49 @@
+.form {
+  margin: 30px;
+}
+#title {
+  display: block;
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+.field {
+  border: 1px solid #e3e4f8;
+  width: 88%;
+  height: 40px;
+  border-radius: 10px;
+  padding: 0 10px;
+}
+.field:focus {
+  border: 2px solid #2028b3;
+  outline: none;
+}
+.form_field {
+  margin: 10px;
+}
+.register {
+  transform: translateY(-10px);
+  animation: slideBottom 0.5s forwards;
+}
+.login {
+  transform: translateY(-10px);
+  animation: slideBottom 0.5s forwards;
+}
+@keyframes slideBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reset {
+  cursor: pointer;
+  text-align: center;
+  color: rgb(56, 114, 248);
+}
+.reset:hover {
+  color: #749bf9;
+}
