@@ -1,26 +1,21 @@
-import { useState, useRef } from "react";
 import Tick from "../Tick/Tick";
 import { PatternFormat } from "react-number-format";
-import "./form.css"
 interface PhoneNumberProps {
-  phoneRef: React.MutableRefObject<string>,
-  isPhoneValid: boolean,
-  setIsPhoneValid : (isValid: boolean)=>void
+  accountPhone: string;
+  setAccountPhone: (accountPhone: string) => void;
+  isPhoneValid: boolean;
+  setIsPhoneValid: (isValid: boolean) => void;
 }
-
-
 const PhoneNumber = (props: PhoneNumberProps) => {
-  const {phoneRef, isPhoneValid, setIsPhoneValid} = props;
-  function validate() {
-    // retrieveing phoneRef value
-    let el = phoneRef.current?.['value' as keyof typeof phoneRef.current].toString();
-    // clearing out the value from unnecessary dashes , and ()
-    let purePhoneNumber = el.replace(/[^0-9\.]+/g, "");
-    console.log(el);
-    if(purePhoneNumber.length == 11) {
+  const { accountPhone, setAccountPhone, isPhoneValid, setIsPhoneValid } =
+    props;
+  function validate(e: string) {
+    setAccountPhone(e);
+    let purePhoneNumber = accountPhone.replace(/[^0-9\.]+/g, "");
+    console.log(purePhoneNumber);
+    if (purePhoneNumber.length >= 10) {
       setIsPhoneValid(true);
-    }
-    else {
+    } else {
       setIsPhoneValid(false);
     }
   }
@@ -30,13 +25,13 @@ const PhoneNumber = (props: PhoneNumberProps) => {
         *Phone Number
       </label>
       <PatternFormat
-        onChange={() => validate()}
-        getInputRef={(el: string) => (phoneRef.current = el)}
+        onChange={(e) => validate(e.target.value)}
         className="field"
         format="+7 (###) ### ####"
         placeholder="Enter your phone number"
+        value={accountPhone}
       />
-      <Tick isValid={isPhoneValid}/>
+      <Tick isValid={isPhoneValid} />
     </div>
   );
 };

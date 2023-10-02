@@ -6,7 +6,7 @@ interface ButtonProps {
   onClick: Function;
 }
 const Button = (props: ButtonProps) => {
-  const {buttonBlocked, text, active, onClick } = props;
+  const { buttonBlocked, text, active, onClick } = props;
   const color = active ? "active" : "";
   return (
     <div className={`button`}>

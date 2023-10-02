@@ -6,6 +6,7 @@ import Login from "./Login";
 import { addPerson } from "../../store/features/accountSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import "./form.css";
+import Reset from "./Reset";
 
 interface FormProps {
   submitted: string;
@@ -13,9 +14,8 @@ interface FormProps {
 }
 
 const Form = (props: FormProps) => {
-  let phoneRef = React.useRef<string>("");
-  const [loginPassword, setLoginPassword] = React.useState("");
-  const [errors, setErrors] = React.useState(null)
+  const [accountPhone, setAccountPhone] = React.useState("");
+  const [accountPassword, setAccountPassword] = React.useState("");
   const [buttonText, setButtonText] = React.useState("Login");
   const [buttonBlocked, setButtonBlocked] = React.useState(true);
   const [isPhoneValid, setIsPhoneValid] = React.useState(false);
@@ -34,21 +34,19 @@ const Form = (props: FormProps) => {
   function handlePhoneValidation() {
     if (isPhoneValid) {
       console.log(buttonBlocked);
-      let el =
-        phoneRef.current?.["value" as keyof typeof phoneRef.current].toString();
-      let found = persons.some((person) => person.phoneNumber === el);
-      if (found) {
+      let found = persons.some((person) => person.phoneNumber === accountPhone);
+      if (found && buttonText == "Login") {
         setButtonText("Login");
         setButtonBlocked(false);
       } else if (found && buttonText == "Reset") {
         setButtonBlocked(false);
-      } else if(!found){
+      } else if (!found) {
         setButtonText("Register");
         setButtonBlocked(true);
       }
     }
   }
-  function handleFormSubmission(e:any) {
+  function handleFormSubmission(e: any) {
     switch (buttonText) {
       case "Register":
         {
@@ -60,30 +58,33 @@ const Form = (props: FormProps) => {
           };
           dispatch(addPerson(object));
           props.setSubmitted("Register");
-          setButtonText("Login")
+          setAccountPhone("");
+          setIsPhoneValid(false);
+          setButtonText("Login");
         }
         break;
       case "Login":
         {
-          let el =
-            phoneRef.current?.[
-              "value" as keyof typeof phoneRef.current
-            ].toString();
           let logged = persons.some(
             (person) =>
-              person.phoneNumber === el && person.password == loginPassword
+              person.phoneNumber === accountPhone &&
+              person.password == accountPassword
           );
           if (logged) {
             props.setSubmitted("Login");
-          }
-          else {
+            setAccountPhone("");
+            setAccountPassword("");
+            setIsPhoneValid(false);
+          } else {
             props.setSubmitted("LoginError");
           }
         }
         break;
       case "Reset":
         props.setSubmitted("Reset");
-        setButtonText("Login")
+        setAccountPhone("");
+        setIsPhoneValid(false);
+        setButtonText("Login");
         break;
     }
   }
@@ -91,32 +92,27 @@ const Form = (props: FormProps) => {
     <div className="container">
       <div className="formBlock">
         <form className="form" onSubmit={onSubmit}>
-          <h3 className='title'>{buttonText}</h3>
+          <h3 className="title">{buttonText}</h3>
           <PhoneNumber
-            phoneRef={phoneRef}
+            accountPhone={accountPhone}
+            setAccountPhone={setAccountPhone}
             isPhoneValid={isPhoneValid}
             setIsPhoneValid={setIsPhoneValid}
           />
           {buttonText == "Login" && !buttonBlocked && (
             <Login
-              setButtonText={setButtonText}
-              loginPassword={loginPassword}
-              setLoginPassword={setLoginPassword}
+              loginPassword={accountPassword}
+              setLoginPassword={setAccountPassword}
             />
           )}
-          {buttonText == "Register" &&(
+          {buttonText == "Login" && <Reset setButtonText={setButtonText} />}
+
+          {buttonText == "Register" && (
             <Register
               buttonBlocked={buttonBlocked}
               setButtonBlocked={setButtonBlocked}
-              // errors={errors}
-              // setErrors={setErrors}
             />
           )}
-          {/* <div className="field_error">
-            {errors.map((error) => (
-              <p>{error}</p>
-            ))}
-          </div> */}
           <Button
             buttonBlocked={buttonBlocked}
             text={buttonText}

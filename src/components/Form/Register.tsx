@@ -1,21 +1,19 @@
-import "./form.css";
 import Tick from "../Tick/Tick";
-import React from "react";
+import { useState, useEffect } from "react";
 import { validName, validPassword, validEmail } from "../../utils/validFields";
 import Errors from "../Errors/Errors";
 interface RegisterProps {
   buttonBlocked: boolean;
   setButtonBlocked: (buttonBlocked: boolean) => void;
-  // setErrors: (error: []) => void
 }
 const Register = (props: RegisterProps) => {
-  const { buttonBlocked, setButtonBlocked } = props;
-  const [fields, setFields] = React.useState({
+  const { setButtonBlocked } = props;
+  const [fields, setFields] = useState({
     name: "",
     email: "",
     password: "",
   });
-  const [isFieldValid, setIsFieldValid] = React.useState({
+  const [isFieldValid, setIsFieldValid] = useState({
     name: false,
     email: false,
     password: false,
@@ -38,7 +36,6 @@ const Register = (props: RegisterProps) => {
         {
           setFields((prev) => ({ ...prev, email: e }));
           let isEmailValid = validEmail(e);
-          // console.log(isEmailValid)
           if (isEmailValid.length > 0) {
             setIsFieldValid((prev) => ({ ...prev, email: false }));
           } else {
@@ -59,7 +56,7 @@ const Register = (props: RegisterProps) => {
         break;
     }
   }
-  React.useEffect(() => {
+  useEffect(() => {
     console.log(
       isFieldValid.name + " " + isFieldValid.email + " " + isFieldValid.password
     );
