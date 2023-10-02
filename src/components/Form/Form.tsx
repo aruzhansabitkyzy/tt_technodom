@@ -76,6 +76,9 @@ const Form = (props: FormProps) => {
           if (logged) {
             props.setSubmitted("Login");
           }
+          else {
+            props.setSubmitted("LoginError");
+          }
         }
         break;
       case "Reset":
@@ -94,14 +97,14 @@ const Form = (props: FormProps) => {
             isPhoneValid={isPhoneValid}
             setIsPhoneValid={setIsPhoneValid}
           />
-          {buttonText == "Login" && (
+          {buttonText == "Login" && !buttonBlocked && (
             <Login
               setButtonText={setButtonText}
               loginPassword={loginPassword}
               setLoginPassword={setLoginPassword}
             />
           )}
-          {buttonText == "Register" && (
+          {buttonText == "Register" &&(
             <Register
               buttonBlocked={buttonBlocked}
               setButtonBlocked={setButtonBlocked}
