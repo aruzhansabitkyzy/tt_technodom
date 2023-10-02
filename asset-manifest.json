@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/tt_technodom/static/css/main.1910b191.css",
+    "main.js": "/tt_technodom/static/js/main.60c85d9b.js",
+    "static/js/787.c4e7f8f9.chunk.js": "/tt_technodom/static/js/787.c4e7f8f9.chunk.js",
+    "static/media/v904-nunny-012.jpg": "/tt_technodom/static/media/v904-nunny-012.6761a266f2f4fb54be39.jpg",
+    "static/media/checkmark.png": "/tt_technodom/static/media/checkmark.30352c33dfcd7eae7ddd.png",
+    "index.html": "/tt_technodom/index.html",
+    "main.1910b191.css.map": "/tt_technodom/static/css/main.1910b191.css.map",
+    "main.60c85d9b.js.map": "/tt_technodom/static/js/main.60c85d9b.js.map",
+    "787.c4e7f8f9.chunk.js.map": "/tt_technodom/static/js/787.c4e7f8f9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1910b191.css",
+    "static/js/main.60c85d9b.js"
+  ]
+}
